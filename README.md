@@ -282,11 +282,6 @@ djangobooks/
 
 This project is licensed under the MIT License.
 
-## Support
-
-For support and questions, please contact:
-- Email: info@bookstore.com
-- Website: https://bookstore.com
 
 ---
 
