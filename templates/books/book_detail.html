@@ -1,0 +1,263 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ book.title }} - Online Bookstore{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'books:home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'books:book_list' %}">Books</a></li>
+            <li class="breadcrumb-item active">{{ book.title }}</li>
+        </ol>
+    </nav>
+    
+    <div class="row">
+        <div class="col-lg-4 mb-4">
+            <div class="book-detail-image">
+                {% if book.image %}
+                    <img src="{{ book.image.url }}" alt="{{ book.title }}" class="img-fluid rounded shadow">
+                {% else %}
+                    <img src="https://picsum.photos/seed/{{ book.id }}/400/600" alt="{{ book.title }}" class="img-fluid rounded shadow">
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="col-lg-8">
+            <div class="book-detail-info">
+                <h1 class="book-detail-title mb-3">{{ book.title }}</h1>
+                
+                <div class="book-meta mb-4">
+                    <p class="mb-2"><strong>Author:</strong> {{ book.author }}</p>
+                    {% if book.category %}
+                        <p class="mb-2"><strong>Category:</strong> <span class="badge bg-primary">{{ book.category.name }}</span></p>
+                    {% endif %}
+                    <p class="mb-2">
+                        <strong>Availability:</strong> 
+                        {% if book.is_available %}
+                            <span class="badge bg-success">In Stock</span>
+                        {% else %}
+                            <span class="badge bg-danger">Out of Stock</span>
+                        {% endif %}
+                    </p>
+                </div>
+                
+                <div class="book-price-section mb-4">
+                    <h2 class="text-primary">₹{{ book.price }}</h2>
+                </div>
+                
+                <div class="book-description mb-4">
+                    <h4>Description</h4>
+                    <p>{{ book.description|linebreaks }}</p>
+                </div>
+                
+                {% if book.is_available %}
+                    <form method="POST" action="{% url 'books:add_to_cart' %}" class="add-to-cart-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="book_id" value="{{ book.id }}">
+                        <div class="row align-items-center mb-3">
+                            <div class="col-auto">
+                                <label for="quantity" class="form-label">Quantity:</label>
+                            </div>
+                            <div class="col-auto">
+                                <input type="number" name="quantity" id="quantity" class="form-control" value="1" min="1" max="10" style="width: 80px;">
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-cart-plus me-2"></i>Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                {% else %}
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        This book is currently out of stock.
+                    </div>
+                {% endif %}
+                
+                <div class="book-features mt-4">
+                    <h4>Features</h4>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i>Secure checkout</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Fast delivery</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Quality guarantee</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Customer support</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Related Books -->
+    {% if related_books %}
+        <section class="related-books mt-5">
+            <h3 class="mb-4">Related Books</h3>
+            <div class="row">
+                {% for related_book in related_books %}
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                        <div class="book-card h-100">
+                            <div class="book-image-container">
+                                {% if related_book.image %}
+                                    <img src="{{ related_book.image.url }}" alt="{{ related_book.title }}" class="book-image">
+                                {% else %}
+                                    <img src="https://picsum.photos/seed/{{ related_book.id }}/300/400" alt="{{ related_book.title }}" class="book-image">
+                                {% endif %}
+                                <div class="book-overlay">
+                                    <a href="{% url 'books:book_detail' related_book.slug %}" class="btn btn-primary">View Details</a>
+                                </div>
+                            </div>
+                            <div class="book-info p-3">
+                                <h5 class="book-title">{{ related_book.title }}</h5>
+                                <p class="book-author text-muted">by {{ related_book.author }}</p>
+                                <div class="book-footer d-flex justify-content-between align-items-center">
+                                    <span class="book-price fw-bold">₹{{ related_book.price }}</span>
+                                    <form method="POST" action="{% url 'books:add_to_cart' %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="book_id" value="{{ related_book.id }}">
+                                        <button type="submit" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-cart-plus"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
+    
+    <!-- Customer Reviews Section -->
+    <section class="customer-reviews mt-5">
+        <div class="container">
+            <h3 class="mb-4">Customer Reviews</h3>
+            
+            <!-- Review Summary -->
+            <div class="review-summary mb-4 p-4 bg-light rounded">
+                <div class="row align-items-center">
+                    <div class="col-md-4 text-center">
+                        <div class="rating-display">
+                            <h1 class="display-4 text-primary mb-0">4.5</h1>
+                            <div class="stars mb-2">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star-half-alt text-warning"></i>
+                            </div>
+                            <p class="text-muted">Based on 128 reviews</p>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="rating-bars">
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="me-2">5 stars</span>
+                                <div class="progress flex-grow-1 me-2" style="height: 8px;">
+                                    <div class="progress-bar bg-warning" style="width: 65%"></div>
+                                </div>
+                                <span class="text-muted">83</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="me-2">4 stars</span>
+                                <div class="progress flex-grow-1 me-2" style="height: 8px;">
+                                    <div class="progress-bar bg-warning" style="width: 20%"></div>
+                                </div>
+                                <span class="text-muted">26</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="me-2">3 stars</span>
+                                <div class="progress flex-grow-1 me-2" style="height: 8px;">
+                                    <div class="progress-bar bg-warning" style="width: 10%"></div>
+                                </div>
+                                <span class="text-muted">13</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="me-2">2 stars</span>
+                                <div class="progress flex-grow-1 me-2" style="height: 8px;">
+                                    <div class="progress-bar bg-warning" style="width: 3%"></div>
+                                </div>
+                                <span class="text-muted">4</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <span class="me-2">1 star</span>
+                                <div class="progress flex-grow-1 me-2" style="height: 8px;">
+                                    <div class="progress-bar bg-warning" style="width: 2%"></div>
+                                </div>
+                                <span class="text-muted">2</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Individual Reviews -->
+            <div class="reviews-list">
+                <div class="review-item card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <h6 class="mb-1">Rahul Sharma</h6>
+                                <div class="stars text-warning">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                            <small class="text-muted">2 days ago</small>
+                        </div>
+                        <p class="mb-0">Amazing book! The storytelling is captivating and the characters are well-developed. Couldn't put it down once I started reading. Highly recommend to all book lovers!</p>
+                    </div>
+                </div>
+                
+                <div class="review-item card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <h6 class="mb-1">Priya Patel</h6>
+                                <div class="stars text-warning">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                            </div>
+                            <small class="text-muted">1 week ago</small>
+                        </div>
+                        <p class="mb-0">Great read! The author has a unique writing style that keeps you engaged throughout. The plot twists were unexpected and well-executed. Will definitely read more from this author.</p>
+                    </div>
+                </div>
+                
+                <div class="review-item card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <h6 class="mb-1">Amit Kumar</h6>
+                                <div class="stars text-warning">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                            </div>
+                            <small class="text-muted">2 weeks ago</small>
+                        </div>
+                        <p class="mb-0">Good book overall. The concept is interesting and the execution is solid. Some parts felt a bit slow, but the ending made up for it. Worth reading if you enjoy this genre.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Load More Reviews Button -->
+            <div class="text-center mt-4">
+                <button class="btn btn-outline-primary">
+                    <i class="fas fa-plus me-2"></i>Load More Reviews
+                </button>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

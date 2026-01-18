@@ -1,0 +1,462 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Us - Online Bookstore{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Contact Page Advanced Styles */
+.contact-hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('https://picsum.photos/seed/contact-books/1920/600') center/cover;
+    opacity: 0.1;
+}
+
+.contact-hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.contact-form-section {
+    padding: 80px 0;
+    background: #f8f9fa;
+}
+
+.contact-form-card {
+    background: white;
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.form-control, .form-select {
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 12px 15px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.form-label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.contact-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 50px;
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    color: white;
+}
+
+.contact-methods-section {
+    padding: 80px 0;
+}
+
+.contact-method-card {
+    background: white;
+    border-radius: 15px;
+    padding: 40px;
+    text-align: center;
+    height: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.contact-method-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+.contact-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 2rem;
+}
+
+.faq-section {
+    padding: 80px 0;
+    background: #f8f9fa;
+}
+
+.faq-card {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 20px;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.faq-card:hover {
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.faq-question {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.faq-answer {
+    color: #6c757d;
+    line-height: 1.6;
+}
+
+.map-section {
+    padding: 80px 0;
+}
+
+.map-container {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    height: 400px;
+    position: relative;
+}
+
+.map-placeholder {
+    width: 100%;
+    height: 100%;
+    background: url('https://picsum.photos/seed/bookstore-map/1200/400') center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.section-subtitle {
+    font-size: 1.2rem;
+    color: #6c757d;
+    margin-bottom: 3rem;
+}
+
+.divider {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 2px;
+    margin: 0 auto 3rem;
+}
+
+.alert-success {
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+}
+
+.alert-success .btn-close {
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .contact-hero {
+        padding: 60px 0;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .contact-form-card {
+        padding: 30px 20px;
+    }
+    
+    .contact-method-card {
+        padding: 30px 20px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Advanced Contact Hero Section -->
+<section class="contact-hero">
+    <div class="container">
+        <div class="contact-hero-content text-center" data-aos="fade-up">
+            <h1 class="display-3 fw-bold mb-4" style="font-family: 'Playfair Display', serif;">Get in Touch</h1>
+            <p class="lead mb-4">We're here to help and answer any questions you might have</p>
+            <div class="divider mx-auto"></div>
+            <p class="mb-0">Whether you need help with an order, have a book recommendation, or just want to chat about literature</p>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Form Section -->
+<section class="contact-form-section">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="section-title">Send Us a Message</h2>
+            <p class="section-subtitle">We typically respond within 24 hours</p>
+            <div class="divider"></div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-8 mx-auto" data-aos="fade-up">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                            <i class="fas fa-check-circle me-2"></i>{{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <div class="contact-form-card">
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label for="name" class="form-label">
+                                    <i class="fas fa-user me-2"></i>Full Name *
+                                </label>
+                                <input type="text" class="form-control" id="name" name="name" required placeholder="John Doe">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="email" class="form-label">
+                                    <i class="fas fa-envelope me-2"></i>Email Address *
+                                </label>
+                                <input type="email" class="form-control" id="email" name="email" required placeholder="john@example.com">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="subject" class="form-label">
+                                <i class="fas fa-tag me-2"></i>Subject *
+                            </label>
+                            <select class="form-select" id="subject" name="subject" required>
+                                <option value="">Choose a subject...</option>
+                                <option value="Order Inquiry">Order Inquiry</option>
+                                <option value="Book Recommendation">Book Recommendation</option>
+                                <option value="Technical Support">Technical Support</option>
+                                <option value="Partnership">Partnership Opportunity</option>
+                                <option value="Feedback">Feedback</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="message" class="form-label">
+                                <i class="fas fa-comment me-2"></i>Message *
+                            </label>
+                            <textarea class="form-control" id="message" name="message" rows="6" required placeholder="Tell us more about your inquiry..."></textarea>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit" class="contact-btn">
+                                <i class="fas fa-paper-plane me-2"></i>Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Methods Section -->
+<section class="contact-methods-section">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="section-title">Other Ways to Reach Us</h2>
+            <p class="section-subtitle">Choose the method that works best for you</p>
+            <div class="divider"></div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4" data-aos="zoom-in" data-aos-delay="100">
+                <div class="contact-method-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h4 class="mb-3">Phone Support</h4>
+                    <p class="text-muted mb-3">Speak directly with our customer service team</p>
+                    <h5 class="text-primary">+91 9876543210</h5>
+                    <p class="small text-muted">Mon-Fri: 9AM-6PM IST</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4" data-aos="zoom-in" data-aos-delay="200">
+                <div class="contact-method-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h4 class="mb-3">Email Support</h4>
+                    <p class="text-muted mb-3">Send us detailed inquiries anytime</p>
+                    <h5 class="text-primary">info@bookstore.com</h5>
+                    <p class="small text-muted">24/7 Support</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4" data-aos="zoom-in" data-aos-delay="300">
+                <div class="contact-method-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h4 class="mb-3">Visit Our Store</h4>
+                    <p class="text-muted mb-3">Come browse our physical collection</p>
+                    <h5 class="text-primary">123 Book Street</h5>
+                    <p class="small text-muted">WB, India</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq-section">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle">Quick answers to common questions</p>
+            <div class="divider"></div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="faq-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="faq-question">
+                        <i class="fas fa-question-circle me-2 text-primary"></i>
+                        How long does shipping take?
+                    </div>
+                    <div class="faq-answer">
+                        Standard shipping typically takes 5-7 business days within India. Express shipping is available for 2-3 business day delivery.
+                    </div>
+                </div>
+                
+                <div class="faq-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="faq-question">
+                        <i class="fas fa-question-circle me-2 text-primary"></i>
+                        What is your return policy?
+                    </div>
+                    <div class="faq-answer">
+                        We offer a 30-day return policy for books in their original condition. Simply contact us to initiate a return.
+                    </div>
+                </div>
+                
+                <div class="faq-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="faq-question">
+                        <i class="fas fa-question-circle me-2 text-primary"></i>
+                        Do you offer international shipping?
+                    </div>
+                    <div class="faq-answer">
+                        Yes, we ship to most countries worldwide. International shipping rates and delivery times vary by location.
+                    </div>
+                </div>
+                
+                <div class="faq-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="faq-question">
+                        <i class="fas fa-question-circle me-2 text-primary"></i>
+                        How can I track my order?
+                    </div>
+                    <div class="faq-answer">
+                        Once your order ships, you'll receive a tracking number via email. You can use this to track your package on our website.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Map Section -->
+<section class="map-section">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="section-title">Find Our Store</h2>
+            <p class="section-subtitle">Visit us at our physical location</p>
+            <div class="divider"></div>
+        </div>
+        
+        <div class="map-container" data-aos="fade-up">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3683.8194772540114!2d88.33926212507812!3d22.585854129482314!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a027795165f121f%3A0xdec4e62aca6bcefe!2s2%2C%20Mukharam%20Kanoria%20Rd.%2C%20near%20Howrah%20railway%20station%2C%20Gulmohar%20Railway%20Quarters%2C%20Mali%20Panchghara%2C%20Howrah%2C%20West%20Bengal%20711101!5e0!3m2!1sen!2sin!4v1768727451785!5m2!1sen!2sin" width="1400" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 1000,
+        once: true,
+        offset: 100
+    });
+    
+    // Form validation enhancement
+    const form = document.querySelector('form');
+    const inputs = form.querySelectorAll('input, textarea, select');
+    
+    inputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            if (this.hasAttribute('required') && !this.value.trim()) {
+                this.classList.add('is-invalid');
+            } else {
+                this.classList.remove('is-invalid');
+                this.classList.add('is-valid');
+            }
+        });
+    });
+    
+    // Form submission animation
+    form.addEventListener('submit', function(e) {
+        const submitBtn = form.querySelector('.contact-btn');
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+        submitBtn.disabled = true;
+    });
+</script>
+{% endblock %}
